@@ -1,67 +1,323 @@
-# Food Demand Forecasting using Machine Learning 📈🍽️
+# Food Demand Forecasting using Machine Learning
 
-## Overview
+## Project Overview
 
-This project focuses on forecasting food demand using machine learning techniques.
+This project focuses on forecasting food demand using machine learning regression techniques.
 
-The goal is to predict the number of meal orders (`num_orders`) based on historical demand data, meal characteristics, pricing information, promotional campaigns, and fulfillment center attributes.
+The objective is to predict the number of meal orders (`num_orders`) based on historical demand patterns, pricing strategies, promotional campaigns, and fulfillment center characteristics.
 
-Multiple regression algorithms were implemented and compared to identify the most effective approach for forecasting food demand.
+Multiple machine learning models were implemented and compared to identify the most effective approach for demand forecasting.
 
 ---
 
 ## Business Problem
 
-Accurate demand forecasting is essential for:
+Accurate demand forecasting is critical for food delivery companies, cloud kitchens, restaurants, and supply chain operators.
 
-* Inventory management
-* Supply chain optimization
-* Reducing food waste
-* Workforce planning
-* Promotional strategy planning
+Poor forecasts can lead to:
 
-Poor demand forecasting can lead to overstocking, shortages, increased costs, and reduced customer satisfaction.
+* Food waste
+* Inventory shortages
+* Excess operational costs
+* Poor customer experience
+* Inefficient workforce planning
 
-This project aims to build predictive models that can estimate future meal demand using historical operational data.
+The goal of this project is to build predictive models that help estimate future meal demand and support data-driven operational planning.
 
 ---
 
-## Dataset Features
+## Dataset Description
 
-The dataset contains information related to:
+The dataset contains historical meal order information along with pricing, promotion, and fulfillment center details.
 
-### Meal Information
+### Features
 
-* Meal ID
-* Category
-* Cuisine
+#### Time Information
 
-### Pricing Information
+* Week Number
+
+#### Pricing Information
 
 * Base Price
 * Checkout Price
 
-### Promotional Information
+#### Promotional Information
 
 * Homepage Featured
 * Emailer Promotion
 
-### Fulfillment Center Information
+#### Product Information
+
+* Meal ID
+
+#### Fulfillment Center Information
 
 * Center ID
-* Region and Operational Attributes
-
-### Time Information
-
-* Week Number
 
 ### Target Variable
 
-* Number of Orders (`num_orders`)
+```text
+num_orders
+```
+
+Number of meal orders placed during a given week.
 
 ---
 
-## Technologies Used
+## Data Preprocessing
+
+### Data Cleaning
+
+* Missing value inspection
+* Data validation
+* Feature consistency checks
+
+### Feature Engineering
+
+#### Discount Percentage
+
+```python
+discount = (
+    base_price - checkout_price
+) / base_price
+```
+
+Measures the percentage discount applied to a meal.
+
+#### Promotional Discount
+
+```python
+promo_discount = (
+    discount
+    * homepage_featured
+    * emailer_for_promotion
+)
+```
+
+Captures the interaction between discounts and promotional campaigns.
+
+This feature was designed to estimate the amplified impact of marketing-driven discounts.
+
+---
+
+### Categorical Encoding
+
+High-cardinality categorical variables were encoded using One-Hot Encoding.
+
+```python
+pd.get_dummies(
+    df,
+    columns=[
+        "meal_id",
+        "center_id"
+    ]
+)
+```
+
+Final dataset:
+
+```text
+456,548 observations
+134 features
+```
+
+---
+
+## Exploratory Data Analysis
+
+Several visualizations were created to understand demand behavior and identify important relationships.
+
+### Analysis Performed
+
+* Correlation Heatmaps
+* Weekly Demand Trends
+* Demand vs Discount Analysis
+* Demand vs Promotional Discount Analysis
+* Feature Importance Analysis
+* Promotion Impact Analysis
+
+---
+
+# Models Implemented
+
+## 1. Linear Regression
+
+Used as the baseline forecasting model.
+
+### Results
+
+```text
+R² ≈ 0.50
+```
+
+Observations:
+
+* Captured broad demand trends
+* Limited ability to model nonlinear behavior
+
+---
+
+## 2. Ridge Regression
+
+Applied L2 regularization to reduce model complexity.
+
+### Results
+
+```text
+R² ≈ 0.49
+```
+
+Best Alpha:
+
+```text
+5
+```
+
+Observations:
+
+* Similar performance to Linear Regression
+* Improved coefficient stability
+
+---
+
+## 3. Lasso Regression
+
+Applied L1 regularization for feature selection.
+
+### Results
+
+```text
+R² ≈ 0.50
+```
+
+Observations:
+
+* Automatically reduced less useful features
+* Performance remained similar to other linear models
+
+---
+
+## 4. K-Nearest Neighbors Regression
+
+KNN predicts demand based on similar historical observations.
+
+Feature scaling was applied using StandardScaler.
+
+### Results
+
+```text
+R² ≈ 0.76
+MSE ≈ 36,875
+```
+
+Observations:
+
+* Significant improvement over linear models
+* Captured nonlinear demand patterns
+* Demonstrated the importance of local relationships
+
+---
+
+## 5. Random Forest Regression
+
+Random Forest was implemented to capture complex interactions between pricing, promotions, meals, and fulfillment centers.
+
+### Results
+
+```text
+Train R² ≈ 0.98
+Test R² ≈ 0.83
+MSE ≈ 25,482
+```
+
+Observations:
+
+* Best-performing model
+* Strong predictive accuracy
+* Successfully captured nonlinear demand drivers
+* Some overfitting observed but maintained strong generalization performance
+
+---
+
+# Model Comparison
+
+| Model                    | R² Score |
+| ------------------------ | -------- |
+| Linear Regression        | ~0.50    |
+| Ridge Regression         | ~0.49    |
+| Lasso Regression         | ~0.50    |
+| KNN Regression           | ~0.76    |
+| Random Forest Regression | ~0.83    |
+
+---
+
+# Feature Importance Analysis
+
+Random Forest feature importance revealed several major demand drivers.
+
+Top Features Included:
+
+| Feature        | Importance |
+| -------------- | ---------- |
+| Checkout Price | 0.17       |
+| Promo Discount | 0.08       |
+| Meal ID 2290   | 0.08       |
+| Discount       | 0.06       |
+| Week           | 0.06       |
+| Base Price     | 0.06       |
+
+Key finding:
+
+Pricing and promotional variables were among the strongest predictors of customer demand.
+
+---
+
+# Key Business Insights
+
+### Pricing Directly Influences Demand
+
+Checkout price was identified as the single most important feature.
+
+This suggests that pricing strategy plays a critical role in determining customer ordering behavior.
+
+---
+
+### Promotions Increase Demand
+
+The engineered promotional discount feature emerged as one of the most important variables.
+
+Combining discounts with promotional exposure significantly improved demand generation.
+
+---
+
+### Certain Meals Consistently Drive Orders
+
+Specific meal categories demonstrated consistently high demand regardless of promotion levels.
+
+This information can support inventory planning and menu optimization.
+
+---
+
+### Demand Patterns Are Highly Nonlinear
+
+The large performance gap between linear models and Random Forest indicates that food demand is influenced by complex nonlinear relationships.
+
+---
+
+# Business Applications
+
+The forecasting system can be used to:
+
+* Predict future meal demand
+* Optimize inventory management
+* Reduce food waste
+* Improve workforce scheduling
+* Support promotional planning
+* Improve supply chain efficiency
+
+---
+
+# Technologies Used
 
 * Python
 * Pandas
@@ -72,239 +328,40 @@ The dataset contains information related to:
 
 ---
 
-## Data Preprocessing
+# Machine Learning Concepts Demonstrated
 
-The following preprocessing steps were performed:
-
-* Missing value inspection
-* Feature engineering
-* One-hot encoding of categorical variables
-* Train-test split
-* Feature scaling (for KNN, Ridge, and Lasso)
-
-### One-Hot Encoding
-
-Categorical features were converted into numerical representations:
-
-```python
-pd.get_dummies(df, columns=["meal_id", "center_id"])
-```
-
-This resulted in 134 total features.
-
----
-
-## Feature Engineering
-
-### Discount Percentage
-
-A normalized discount feature was created:
-
-```python
-discount = (base_price - checkout_price) / base_price
-```
-
-This captures the percentage discount offered on a meal.
-
----
-
-### Promotional Discount Feature
-
-```python
-promo_discount = (
-    discount
-    * homepage_featured
-    * emailer_for_promotion
-)
-```
-
-This feature captures the combined effect of promotions and discounts.
-
-The hypothesis was that discounts become significantly more effective when supported by marketing campaigns.
-
----
-
-## Exploratory Data Analysis
-
-Several visualizations were created to understand demand patterns.
-
-### Analysis Performed
-
-* Correlation Heatmap
-* Weekly Demand Trends
-* Demand vs Discount Analysis
-* Demand vs Promotional Discount Analysis
-* Homepage Promotion Impact
-* Email Promotion Impact
-* Feature Importance Visualization
-
----
-
-## Models Implemented
-
-### 1. Linear Regression
-
-Used as the baseline model.
-
-Linear Regression assumes a linear relationship between features and demand.
-
----
-
-### 2. Ridge Regression
-
-Introduces L2 regularization to reduce model complexity and improve generalization.
-
-Hyperparameter tuning was performed using GridSearchCV.
-
----
-
-### 3. Lasso Regression
-
-Introduces L1 regularization and performs automatic feature selection.
-
-GridSearchCV was used to determine the optimal regularization strength.
-
----
-
-### 4. K-Nearest Neighbors (KNN) Regression
-
-KNN predicts demand based on the behavior of similar historical observations.
-
-Because KNN is distance-based, feature scaling was applied using StandardScaler.
-
-Cross-validation was performed to identify an appropriate value of K.
-
----
-
-## Model Evaluation
-
-Models were evaluated using:
-
-* R² Score
-* Mean Squared Error (MSE)
-
----
-
-## Results
-
-| Model             | R² Score |
-| ----------------- | -------- |
-| Linear Regression | ~0.50    |
-| Ridge Regression  | ~0.49    |
-| Lasso Regression  | ~0.50    |
-| KNN Regression    | ~0.76    |
-
-### Best Model
-
-**KNN Regression achieved the highest predictive performance.**
-
-```text
-R² ≈ 0.76
-MSE ≈ 36,875
-```
-
-Compared to linear models:
-
-```text
-Linear Models: R² ≈ 0.50
-KNN Regression: R² ≈ 0.76
-```
-
-This significant improvement suggests that food demand exhibits nonlinear patterns that are not fully captured by traditional linear regression approaches.
-
----
-
-## Key Insights
-
-### Discounts Matter
-
-Higher discounts were generally associated with increased demand.
-
----
-
-### Promotions Amplify Demand
-
-The interaction between discounts and promotional campaigns had a measurable impact on order volume.
-
----
-
-### Certain Meals Drive Demand
-
-Feature importance analysis indicated that specific meal IDs consistently contributed to higher order volumes.
-
----
-
-### Demand Patterns Are Nonlinear
-
-The strong performance of KNN suggests that demand forecasting benefits from learning local patterns and similarities rather than relying solely on global linear relationships.
-
----
-
-## Project Structure
-
-```text
-food-demand-forecasting/
-│
-├── notebooks/
-│   ├── Linear_Regression.ipynb
-│   ├── Ridge_Regression.ipynb
-│   ├── Lasso_Regression.ipynb
-│   └── KNN_Regression.ipynb
-│
-├── images/
-│
-├── README.md
-│
-└── requirements.txt
-```
-
----
-
-## Future Improvements
-
-Potential future enhancements include:
-
-* Decision Tree Regressor
-* Random Forest Regressor
-* XGBoost Regressor
-* Time Series Forecasting Models
-* Feature Selection Techniques
-* Model Deployment using Flask
-
----
-
-## Skills Demonstrated
-
-This project demonstrates practical experience with:
-
-* Data Cleaning
-* Feature Engineering
-* Exploratory Data Analysis
 * Regression Modeling
-* Hyperparameter Tuning
-* Cross Validation
-* Model Comparison
-* Machine Learning Pipelines
-* Business-Oriented Forecasting
-
----
-
-## Conclusion
-
-This project explored multiple machine learning approaches for forecasting food demand.
-
-While traditional linear models achieved moderate predictive performance, KNN Regression significantly improved forecasting accuracy by capturing nonlinear demand patterns.
-
-The results highlight the importance of model selection and feature engineering when building real-world forecasting systems.
-
----
-
-## Author
-
-Built as part of a machine learning learning journey focused on:
-
-* Predictive Analytics
-* Demand Forecasting
+* Linear Regression
+* Ridge Regression
+* Lasso Regression
+* KNN Regression
+* Random Forest Regression
 * Feature Engineering
-* Model Evaluation
-* Applied Machine Learning
+* Hyperparameter Tuning
+* GridSearchCV
+* Feature Importance Analysis
+* Model Comparison
+
+---
+
+# Future Improvements
+
+* XGBoost Regressor
+* Gradient Boosting
+* LightGBM
+* Time Series Forecasting Models
+* Advanced Feature Engineering
+* Flask Deployment
+
+---
+
+# Conclusion
+
+This project compared multiple machine learning approaches for food demand forecasting.
+
+While traditional linear models achieved moderate predictive performance, ensemble methods dramatically improved forecasting accuracy.
+
+Random Forest Regression achieved the strongest performance with a test R² score of approximately 0.83, demonstrating the importance of nonlinear modeling techniques for real-world demand forecasting problems.
+
+The results highlight how pricing strategies, promotions, and product characteristics can be leveraged to improve forecasting accuracy and operational decision-making.
+

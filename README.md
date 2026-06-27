@@ -26,7 +26,7 @@ The objective of this project is to build predictive models capable of accuratel
 
 ---
 
-# 🛠️ Technologies Used
+#  Technologies Used
 
 - Python
 - Pandas
@@ -38,7 +38,7 @@ The objective of this project is to build predictive models capable of accuratel
 
 ---
 
-# ⚙️ Data Preprocessing
+#  Data Preprocessing
 
 The following preprocessing steps were performed before model training.
 
@@ -91,7 +91,7 @@ pd.get_dummies(
 
 ---
 
-# 📈 Exploratory Data Analysis
+#  Exploratory Data Analysis
 
 The following analyses were performed:
 
@@ -104,7 +104,7 @@ The following analyses were performed:
 
 ---
 
-# 🤖 Machine Learning Models
+#  Machine Learning Models
 
 ## 1. Linear Regression
 
@@ -255,7 +255,7 @@ Potential future enhancements include:
 
 ---
 
-# 🏆 Conclusion
+#  Conclusion
 
 ### Pricing Strongly Influences Demand
 

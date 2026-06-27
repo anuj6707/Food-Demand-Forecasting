@@ -1,16 +1,16 @@
-# 🍽️ Food Demand Forecasting using Machine Learning
+#  Food Demand Forecasting using Machine Learning
 
-## 📌 Project Overview
+##  Project Overview
 
 This project focuses on forecasting food demand using multiple machine learning regression algorithms.
 
-The objective is to predict the number of meal orders (`num_orders`) based on historical ordering patterns, pricing strategies, promotional campaigns, and fulfillment center characteristics.
+The objective is to predict the number of meal orders based on historical ordering patterns, pricing strategies, promotional campaigns, and fulfillment center characteristics.
 
 The project compares traditional regression models with advanced ensemble learning techniques to determine the most effective approach for real-world demand forecasting.
 
 ---
 
-# 🎯 Business Problem
+# Problem Statement
 
 Accurate demand forecasting plays a crucial role in the food delivery and restaurant industry.
 
@@ -23,44 +23,6 @@ Poor demand estimation can result in:
 - Poor customer experience
 
 The objective of this project is to build predictive models capable of accurately estimating future meal demand, enabling businesses to optimize inventory, pricing strategies, and promotional campaigns.
-
----
-
-# 📊 Dataset Description
-
-The dataset contains historical food ordering data from multiple fulfillment centers.
-
-### Features
-
-### Time
-
-- Week Number
-
-### Pricing
-
-- Base Price
-- Checkout Price
-
-### Promotions
-
-- Homepage Featured
-- Emailer Promotion
-
-### Product Information
-
-- Meal ID
-
-### Fulfillment Center
-
-- Center ID
-
-### Target Variable
-
-```text
-num_orders
-```
-
-Number of meal orders placed during a given week.
 
 ---
 
@@ -125,13 +87,6 @@ pd.get_dummies(
     df,
     columns=["meal_id","center_id"]
 )
-```
-
-Final Dataset:
-
-```
-456,548 rows
-134 features
 ```
 
 ---
@@ -284,22 +239,23 @@ Testing R² ≈ 0.84
 
 ---
 
-# 📌 Feature Importance Analysis
 
-Random Forest feature importance revealed the primary demand drivers.
 
-| Feature | Importance |
-|----------|-----------:|
-| Checkout Price | 0.17 |
-| Promotional Discount | 0.08 |
-| Meal ID 2290 | 0.08 |
-| Discount | 0.06 |
-| Week | 0.06 |
-| Base Price | 0.06 |
+# 🔮 Future Improvements
+
+Potential future enhancements include:
+
+- LightGBM
+- CatBoost
+- Time Series Forecasting (ARIMA, Prophet, LSTM)
+- SHAP Feature Importance
+- Hyperparameter Optimization using Optuna
+- Flask Deployment
+- Real-Time Demand Forecasting Dashboard
 
 ---
 
-# 💡 Key Business Insights
+# 🏆 Conclusion
 
 ### Pricing Strongly Influences Demand
 
@@ -335,72 +291,6 @@ XGBoost achieved the strongest predictive performance.
 
 ---
 
-# 🚀 Business Applications
-
-The final forecasting model can be used for:
-
-- Inventory Planning
-- Demand Forecasting
-- Workforce Scheduling
-- Supply Chain Optimization
-- Promotion Planning
-- Menu Optimization
-- Reducing Food Waste
-
 ---
 
-# 🧠 Machine Learning Concepts Demonstrated
-
-- Regression Analysis
-- Linear Regression
-- Ridge Regression
-- Lasso Regression
-- KNN Regression
-- Random Forest Regression
-- XGBoost Regression
-- Ensemble Learning
-- Feature Engineering
-- Hyperparameter Tuning
-- GridSearchCV
-- Feature Importance Analysis
-- Model Comparison
-- Business Analytics
-
----
-
-# 🔮 Future Improvements
-
-Potential future enhancements include:
-
-- LightGBM
-- CatBoost
-- Time Series Forecasting (ARIMA, Prophet, LSTM)
-- SHAP Feature Importance
-- Hyperparameter Optimization using Optuna
-- Flask Deployment
-- Real-Time Demand Forecasting Dashboard
-
----
-
-# 🏆 Conclusion
-
-This project compared six regression algorithms for forecasting food demand using historical sales, pricing, and promotional data.
-
-Traditional linear models provided useful baseline performance but struggled to capture nonlinear demand behavior. K-Nearest Neighbors significantly improved prediction accuracy by leveraging local relationships within the data.
-
-Tree-based ensemble methods achieved the strongest performance. Random Forest produced a test **R² score of approximately 0.83**, while **XGBoost delivered the highest predictive performance with a test R² score of approximately 0.84**.
-
-The project demonstrates how feature engineering, ensemble learning, and model comparison can substantially improve forecasting accuracy for real-world demand prediction problems in the food delivery industry.
-
----
-
-## 👨‍💻 Author
-
-Built as part of a machine learning portfolio focused on:
-
-- Predictive Analytics
-- Demand Forecasting
-- Feature Engineering
-- Ensemble Learning
-- Applied Machine Learning
 
